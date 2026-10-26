@@ -1,0 +1,10 @@
+fastapi>=0.115,<1
+uvicorn>=0.30,<1
+pydantic>=2.7,<3
+google-genai>=1.0,<2
+python-dotenv>=1.0,<2
+qrcode>=7.4,<9
+twilio>=9.0,<10
+# Voice notes: local speech-to-text (av 15+ breaks faster-whisper 1.2)
+faster-whisper>=1.0,<2
+av>=12,<15

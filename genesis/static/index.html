@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weave</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2324408e'/%3E%3Cstop offset='.55' stop-color='%2324408e'/%3E%3Cstop offset='1' stop-color='%231c2333'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M16 2c.6 8.4 5.6 13.4 14 14-8.4.6-13.4 5.6-14 14-.6-8.4-5.6-13.4-14-14 8.4-.6 13.4-5.6 14-14z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/app.css?v=journal1">
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="sunrise" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#24408e"/><stop offset="1" stop-color="#1c2333"/>
+      </linearGradient>
+      <symbol id="spark" viewBox="0 0 32 32"><path d="M16 2c.6 8.4 5.6 13.4 14 14-8.4.6-13.4 5.6-14 14-.6-8.4-5.6-13.4-14-14 8.4-.6 13.4-5.6 14-14z"/></symbol>
+    </defs>
+  </svg>
+  
+  <header class="nav">
+    <a class="brand" href="/" aria-label="Weave home">
+      <svg class="spark"><use href="#spark" fill="url(#sunrise)"/></svg>
+      <span>Weave</span>
+    </a>
+    <div class="nav-right">
+      <button id="envPill" class="pill" type="button" aria-expanded="false" aria-controls="envPanel">
+        <span class="dot"></span><span id="envText">Checking studio…</span>
+      </button>
+      <button id="phoneBtn" class="btn-outline" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.5h3"/></svg>
+        <span>Connect phone</span>
+      </button>
+    </div>
+  </header>
+  <section id="envPanel" class="env-panel" hidden></section>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">An Android app journal</p>
+      <h1>What will you <span class="sunrise-text">create today?</span></h1>
+      <p class="lede">Describe an app in your own words. Weave designs it, writes native Kotlin, compiles it on this computer and hands you an app you can install.</p>
+
+      <form id="buildForm" class="composer" novalidate>
+        <label class="sr-only" for="prompt">Describe your app</label>
+        <textarea id="prompt" name="prompt" rows="4" maxlength="4000" required
+          placeholder="A plant-watering tracker that tells me which plants are thirsty and keeps a history…"></textarea>
+        <div class="composer-bar">
+          <label class="name-field">
+            <span class="sr-only">App name (optional)</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>
+            <input id="appName" name="appName" type="text" maxlength="30" autocomplete="off" placeholder="Name it (optional)">
+          </label>
+          <span id="charCount" class="count">0 / 4000</span>
+          <button id="generateBtn" class="btn-sunrise" type="submit">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><use href="#spark"/></svg>
+            <span class="btn-label">Generate app</span>
+          </button>
+        </div>
+      </form>
+      <p id="formError" class="form-error" role="alert" hidden></p>
+
+      <div class="chips" aria-label="Examples">
+        <button type="button" class="chip" style="--c:#3ee0a1" data-example="A habit tracker with daily check-ins, streak counters, and a 7-day completion grid. Let me add, rename and delete habits.">Habit tracker</button>
+        <button type="button" class="chip" style="--c:#ff8a5b" data-example="Build me a gym tracker with workout logging, exercise history, progress charts, and a weekly workout planner.">Workout log</button>
+        <button type="button" class="chip" style="--c:#8a74ff" data-example="A flashcards app: create decks, add cards with front and back, a study mode with a flip animation, and mark cards as known or still learning.">Flashcards</button>
+        <button type="button" class="chip" style="--c:#5bc0ff" data-example="A to-do list with due dates, priorities, and filters for today, upcoming and done. One tap to complete.">To-do list</button>
+        <button type="button" class="chip" style="--c:#ffb15c" data-example="A beautiful calculator with a history of past calculations, percentages, square roots, and big, satisfying buttons.">Calculator</button>
+      </div>
+      <p class="fine">Best for calculators, habit trackers, flashcards, workout logs and to-do lists · apps run offline and ask for no permissions</p>
+    </section>
+
+    <section id="buildCard" class="panel build" hidden aria-live="polite">
+      <div class="build-head">
+        <div id="buildTile" class="tile tile-lg">✦</div>
+        <div class="build-titles">
+          <div class="meta" id="buildId"></div>
+          <h2 id="buildTitle">Imagining your app…</h2>
+          <p id="buildDesc" class="muted"></p>
+        </div>
+        <span id="statusBadge" class="badge">Queued</span>
+      </div>
+
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="bar" id="progressBar"></div>
+      </div>
+      <p id="buildMessage" class="message"></p>
+
+      <ol class="stepper" id="stepper">
+        <li data-step="generating"><i></i><b>Design</b><small>Gemini writes Kotlin</small></li>
+        <li data-step="validating"><i></i><b>Safety check</b><small>Rules enforced</small></li>
+        <li data-step="building"><i></i><b>Compile</b><small>Gradle build</small></li>
+        <li data-step="repairing"><i></i><b>Repair</b><small>Auto-fix errors</small></li>
+        <li data-step="verifying"><i></i><b>Verify</b><small>APK inspected</small></li>
+      </ol>
+
+      <div id="resultBox" class="result" hidden>
+        <div class="result-main">
+          <div>
+            <div class="result-title">Ready to install</div>
+            <div class="muted small" id="apkMeta"></div>
+            <div class="mono small" id="apkName"></div>
+          </div>
+          <a id="downloadBtn" class="btn-sunrise" href="#" aria-disabled="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="stroke"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19.5h14"/></svg>
+            <span>Download APK</span>
+          </a>
+        </div>
+        <ul class="checks" id="apkChecks"></ul>
+        <details class="install">
+          <summary>Install it on a phone</summary>
+          <ol>
+            <li>Easiest: open the <strong>Weave phone app</strong> (Connect phone ↗), find the app in Library and tap Install.</li>
+            <li>Or copy the APK to the phone and open it, allowing “Install unknown apps” when Android asks. Or run <code>adb install &lt;file&gt;.apk</code>.</li>
+            <li>These are test builds signed on this computer. Weave never installs or runs apps by itself.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div id="errorBox" class="error-box" hidden>
+        <div class="error-title">This one didn't make it</div>
+        <pre id="errorText"></pre>
+        <p class="muted small">Try a simpler or more specific description. The log below shows exactly what happened.</p>
+      </div>
+
+      <div class="details-grid">
+        <div id="featuresBox" class="sub-panel" hidden>
+          <h3>What's inside</h3>
+          <ul id="featuresList" class="bullets"></ul>
+        </div>
+        <div id="attemptsBox" class="sub-panel" hidden>
+          <h3>Build attempts</h3>
+          <ul id="attemptsList" class="attempts"></ul>
+        </div>
+      </div>
+
+      <div class="terminal">
+        <div class="term-head">
+                    <h3>Build log</h3>
+          <div class="log-actions">
+            <label class="toggle"><input type="checkbox" id="autoscroll" checked> Follow</label>
+            <a id="fullLogLink" href="#" target="_blank" rel="noopener">Full log ↗</a>
+          </div>
+        </div>
+        <pre id="log" class="log" tabindex="0" aria-label="Build log"></pre>
+      </div>
+    </section>
+
+    <section class="library">
+      <div class="library-head">
+        <div>
+          <h2>Your apps</h2>
+          <p id="libraryMeta" class="muted small"></p>
+        </div>
+        <button id="refreshHistory" class="icon-btn" type="button" aria-label="Refresh">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+        </button>
+      </div>
+      <ul id="historyList" class="app-grid"></ul>
+      <p id="historyEmpty" class="empty">Nothing here yet. Your first app is one sentence away.</p>
+    </section>
+  </main>
+
+  <dialog id="phoneDialog" class="sheet" aria-labelledby="phoneTitle">
+    <button class="close" type="button" data-close aria-label="Close">✕</button>
+    <h2 id="phoneTitle">Make apps from your phone</h2>
+    <p class="muted">Your phone sends ideas, this computer builds them, and the phone installs the result. Your Gemini key never leaves this computer.</p>
+    <div id="phoneOff" class="phone-off" hidden>
+      <p>Phone access is off. Restart Weave with Wi-Fi access on:</p>
+      <pre class="cmd">.venv/bin/python -m genesis serve --lan</pre>
+      <p class="muted small">Only do this on a network you trust. Phones need the access code shown here to connect.</p>
+    </div>
+    <div id="phoneOn" hidden>
+      <div class="pair-grid">
+        <div class="pair-step">
+          <span class="step-n">1</span>
+          <h3>Get the app</h3>
+          <img id="getQr" alt="QR code to download the Weave phone app">
+          <p class="muted small">Scan with the phone's camera on the same Wi-Fi, or open <span class="mono" id="getUrl"></span></p>
+        </div>
+        <div class="pair-step">
+          <span class="step-n">2</span>
+          <h3>Pair it</h3>
+          <img id="pairQr" alt="QR code to pair the Weave phone app">
+          <p class="muted small">Scan to connect instantly, or type these into the app:</p>
+        </div>
+      </div>
+      <dl class="creds">
+        <div><dt>Studio address</dt><dd class="mono" id="pairUrl"></dd></div>
+        <div><dt>Access code</dt><dd class="mono code" id="pairCode"></dd></div>
+      </dl>
+      <p id="noPhoneApk" class="warn small" hidden>The phone app hasn't been built yet. Run <code>scripts/build_phone_app.sh</code>.</p>
+    </div>
+  </dialog>
+
+  <footer class="foot">Runs on this computer · AI key stays here · every build isolated, time-limited and verified</footer>
+  <script src="/static/app.js?v=journal1"></script>
+</body>
+</html>

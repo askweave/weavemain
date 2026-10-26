@@ -1,0 +1,11 @@
+{
+  "name": "Weave Chat",
+  "short_name": "Weave",
+  "description": "Describe an Android app, get a real APK.",
+  "start_url": "/chat",
+  "scope": "/chat",
+  "display": "standalone",
+  "background_color": "#f3eee2",
+  "theme_color": "#f3eee2",
+  "icons": [{"src": "/chat/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]
+}

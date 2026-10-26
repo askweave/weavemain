@@ -1,0 +1,98 @@
+# -----------------------------------------------------------------------------
+# Secrets & Environment Files (NEVER COMMIT REAL CREDENTIALS)
+# -----------------------------------------------------------------------------
+.env
+.env.*
+.env.local
+.env.*.local
+!.env.example
+
+# Private keys, certificates, keystores, and credentials
+*.pem
+*.key
+*.pkcs12
+*.p12
+*.pfx
+*.keystore
+*.jks
+id_rsa*
+id_ed25519*
+
+# -----------------------------------------------------------------------------
+# Databases & Local State
+# -----------------------------------------------------------------------------
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+/data/
+data/
+
+# Logs & Tunnel Dumps
+*.log
+cloudflared.log
+public_url
+access_code
+
+# User Audio & Media Caches
+*.ogg
+*.mp3
+*.wav
+*.m4a
+*.webm
+
+# -----------------------------------------------------------------------------
+# Python
+# -----------------------------------------------------------------------------
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+
+# -----------------------------------------------------------------------------
+# Android & Gradle Build Artifacts
+# -----------------------------------------------------------------------------
+*.apk
+*.aab
+.gradle/
+build/
+android_template/.gradle/
+android_template/build/
+android_template/app/build/
+android_template/local.properties
+android_template/genesis.properties
+android_template/weave.properties
+
+mobile/.gradle/
+mobile/build/
+mobile/app/build/
+mobile/local.properties
+mobile/.kotlin/
+
+# -----------------------------------------------------------------------------
+# Distribution & Temporary Dirs
+# -----------------------------------------------------------------------------
+dist/
+tmp/
+temp/
+
+# -----------------------------------------------------------------------------
+# OS & Editor Specific
+# -----------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.claude/
+*.swp
+*.swo
+*~

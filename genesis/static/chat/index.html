@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" content="#f3eee2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Weave">
+  <meta name="referrer" content="no-referrer">
+  <title>Weave Chat</title>
+  <link rel="manifest" href="/chat/manifest.webmanifest">
+  <link rel="icon" href="/chat/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/chat/icon.svg">
+  <link rel="stylesheet" href="/chat/app.css">
+</head>
+<body>
+  <header class="bar">
+    <div class="brand"><img src="/chat/icon.svg" alt="" width="26" height="26"><span>Weave</span></div>
+    <button id="projectChip" class="chip" type="button" hidden></button>
+    <button id="menuBtn" class="icon-btn" type="button" aria-label="Menu" hidden>&#8942;</button>
+  </header>
+
+  <div id="menu" class="menu" hidden>
+    <button type="button" data-cmd="PROJECTS">My apps</button>
+    <button type="button" data-cmd="STATUS">Build status</button>
+    <button type="button" data-cmd="NEW">Start a new app</button>
+    <button type="button" data-cmd="HELP">Commands</button>
+    <button type="button" id="signOut" class="danger">Sign out</button>
+  </div>
+
+  <main id="signin" class="signin" hidden>
+    <h1>Build Android apps<br><em>by chatting</em></h1>
+    <p class="muted">Describe an app, watch it build, download the APK, then ask for changes. Same engine as the Weave studio.</p>
+    <form id="codeForm" class="card">
+      <label for="code">Link code</label>
+      <input id="code" name="code" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false"
+             placeholder="e.g. 7KQ3XPM2RT" maxlength="20" required>
+      <button type="submit" class="ink-btn">Open chat</button>
+      <p class="small muted">Get a code on the Weave computer:<br><code>python -m genesis sms-link-code</code></p>
+      <p id="signinError" class="error" role="alert" hidden></p>
+    </form>
+    <button id="localBtn" type="button" class="ghost-btn" hidden>Continue on this computer</button>
+  </main>
+
+  <main id="chat" class="chat" hidden>
+    <section id="build" class="build" hidden aria-live="polite">
+      <div class="build-top"><span id="buildRef" class="stamp"></span><span id="buildLabel"></span></div>
+      <div class="track"><div id="buildBar" class="fill"></div></div>
+    </section>
+    <ol id="log" class="log" aria-live="polite"></ol>
+    <div id="empty" class="empty" hidden>
+      <p class="hand">What will you create today?</p>
+      <div class="ideas">
+        <button type="button" class="idea">Build me a habit tracker with streaks, reminders and a dark theme</button>
+        <button type="button" class="idea">A flashcards app for learning Spanish verbs</button>
+        <button type="button" class="idea">A tip calculator that splits the bill</button>
+      </div>
+    </div>
+  </main>
+
+  <form id="composer" class="composer" hidden>
+    <div class="quick">
+      <button type="button" data-cmd="STATUS">Status</button>
+      <button type="button" data-cmd="PROJECTS">Apps</button>
+      <button type="button" data-cmd="OPEN">Download</button>
+      <button type="button" data-cmd="RETRY">Retry</button>
+      <button type="button" data-cmd="CANCEL">Cancel build</button>
+    </div>
+    <div class="row">
+      <textarea id="text" rows="1" maxlength="1600" placeholder="Describe an app, or a change…" aria-label="Message"></textarea>
+      <button id="sendBtn" type="submit" class="send" aria-label="Send">&#10148;</button>
+    </div>
+  </form>
+  <script src="/chat/app.js"></script>
+</body>
+</html>
